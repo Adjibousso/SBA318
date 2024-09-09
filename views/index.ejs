@@ -1,10 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Express POST Example</title>
+</head>
+<body>
+  <h1>Submit a Message</h1>
+  <form action="/submit" method="POST">
+    <input type="text" name="message" placeholder="Enter your message" required>
+    <button type="submit">Submit</button>
+  </form>
 
+  <h2>Messages</h2>
+  <ul>
+    <% messages.forEach((message, index) => { %>
+      <li>
+        <%= message %>
+        <form action="/delete" method="POST" style="display:inline;">
+          <input type="hidden" name="index" value="<%= index %>">
+          <button type="submit">Delete</button>
+        </form>
+      </li>
+    <% }); %>
+  </ul>
+</body>
+</html>
 
-<%- include ('commons/header') %>
-
-    <h1>coucou!!! <%= name %> ,<%= age %></h1>
-
-    <input type="text" placeholder="enter your name">
-    <input type="submit" >
-    <%- include ('commons/footer') %>
 
