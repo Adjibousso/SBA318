@@ -21,10 +21,13 @@
           <input type="hidden" name="index" value="<%= index %>">
           <button type="submit">Delete</button>
         </form>
+        <form action="/update" method="POST" style="display:inline;">
+          <input type="hidden" name="index" value="<%= index %>">
+          <input type="text" name="newMessage" placeholder="New message" required>
+          <button type="submit">Update</button>
+        </form>
       </li>
     <% }); %>
   </ul>
 </body>
 </html>
-
-

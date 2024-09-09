@@ -1,3 +1,4 @@
+//Variables declarations
 const express = require("express");
 const app = express ();
 const port = 3000;  
@@ -22,12 +23,18 @@ let messages = [];
 
 // Handle GET request to render the form and display messages
 app.get('/', (req, res) => {
-  res.render('index', { messages: messages });
+  res.render('index', { messages: messages, error: null });
 });
 
 // Handle POST request to add a message
 app.post('/submit', (req, res) => {
   const message = req.body.message;
+  if (!message) {
+    return res.render('index', { messages: messages, error: 'Message cannot be empty' });
+  }
+  if (!isNaN(message)) {
+    return res.render('index', { messages: messages, error: 'Message cannot be a number' });
+  }
   messages.push(message);
   res.redirect('/');
 });
@@ -35,8 +42,34 @@ app.post('/submit', (req, res) => {
 // Handle POST request to delete a message
 app.post('/delete', (req, res) => {
   const messageIndex = req.body.index;
+  if (messageIndex < 0 || messageIndex >= messages.length) {
+    return res.render('index', { messages: messages, error: 'Invalid message index' });
+  }
   messages.splice(messageIndex, 1);
   res.redirect('/');
+});
+
+// Handle POST request to update a message
+app.post('/update', (req, res) => {
+  const messageIndex = req.body.index;
+  const newMessage = req.body.newMessage;
+  if (messageIndex < 0 || messageIndex >= messages.length) {
+    return res.render('index', { messages: messages, error: 'Invalid message index' });
+  }
+  if (!newMessage) {
+    return res.render('index', { messages: messages, error: 'New message cannot be empty' });
+  }
+  if (!isNaN(newMessage)) {
+    return res.render('index', { messages: messages, error: 'New message cannot be a number' });
+  }
+  messages[messageIndex] = newMessage;
+  res.redirect('/');
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something went wrong!');
 });
 
 app.listen(port, () => {
