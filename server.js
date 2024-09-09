@@ -66,6 +66,16 @@ app.post('/update', (req, res) => {
   res.redirect('/');
 });
 
+// Custom middleware to check if the message is not a number
+const ifNumber = (req, res, next) => {
+    const message = req.body.message || req.body.newMessage;
+    if (message && !isNaN(message)) {
+        return res.status(400).send('Error: Input should not be a number')
+    }
+    next();
+};
+app.use(ifNumber);
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
