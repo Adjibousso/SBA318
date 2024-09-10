@@ -9,19 +9,37 @@ let users = require('./routes/users');
 const bodyParser = require('body-parser')
 
 
-// Middleware to parse URL-encoded bodies
+app.use('/users/id' ,(req, res)=>{
+
+    res.params.name(name)
+})
+
+app.get('/users/:id', (req, res)=> {
+    const id = parseInt(req.params.id)
+   const user = users.find (user => user.id===id)
+   const message= "I found you "
+    res.json(helper.success(message,user))
+
+  res.send(`l'identite de l'utilisateur est le numero:  ${user.name}`)
+
+});
+app.get('/users', (req, res)=> {
+    res.send(`the number of users is ${users.length } `)
+})
+
+
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Set the view engine to EJS
+//  engine to EJS
 app.set('view engine', 'ejs');
 
-// Serve static files from the "public" directory
+//  "public" directory.
 app.use(express.static('public'));
 
-// In-memory storage for messages
+// memory storage for messages
 let messages = [];
 
-// Handle GET request to render the form and display messages
+// get request to render the form, display messages
 app.get('/', (req, res) => {
   res.render('index', { messages: messages, error: null });
 });
@@ -49,7 +67,7 @@ app.post('/delete', (req, res) => {
   res.redirect('/');
 });
 
-// Handle POST request to update a message
+//  update a message
 app.post('/update', (req, res) => {
   const messageIndex = req.body.index;
   const newMessage = req.body.newMessage;
@@ -66,7 +84,7 @@ app.post('/update', (req, res) => {
   res.redirect('/');
 });
 
-// Custom middleware to check if the message is not a number
+// custom middleware to check if the message is number
 const ifNumber = (req, res, next) => {
     const message = req.body.message || req.body.newMessage;
     if (message && !isNaN(message)) {
@@ -76,11 +94,12 @@ const ifNumber = (req, res, next) => {
 };
 app.use(ifNumber);
 
-// Error handling middleware
+// error middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send('Something went wrong!');
 });
+
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

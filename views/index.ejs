@@ -1,33 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Express POST Example</title>
-</head>
-<body>
-  <h1>Submit a Message</h1>
+
+<!--  for the header and footer , I was just try to see if it will work if I put it in a different folder-->
+<%- include ('commons/header') %>
+
+  <h1>Whrite a review</h1>
   <form action="/submit" method="POST">
-    <input type="text" name="message" placeholder="Enter your message" required>
-    <button type="submit">Submit</button>
+    <input type="text" name="message"  placeholder="Enter your review" required  class="message" style="height: 60px; background-color: rgb(238, 184, 118); border-radius: 30%;" > 
+    <br><button type="submit">Submit</button>
   </form>
 
-  <h2>Messages</h2>
-  <ul>
+  <!-- <h2>Write a review </h2> -->
+  
     <% messages.forEach((message, index) => { %>
-      <li>
+      
         <%= message %>
         <form action="/delete" method="POST" style="display:inline;">
-          <input type="hidden" name="index" value="<%= index %>">
+          <input type="hidden" name="index" value="<%= index %>"><br><br>
           <button type="submit">Delete</button>
-        </form>
+        </form><br>
         <form action="/update" method="POST" style="display:inline;">
           <input type="hidden" name="index" value="<%= index %>">
-          <input type="text" name="newMessage" placeholder="New message" required>
-          <button type="submit">Update</button>
+          <input type="text" name="newMessage" placeholder="New message" required><br>
+          <button type="submit" >Update</button><br><br>
         </form>
-      </li>
+      
     <% }); %>
-  </ul>
-</body>
-</html>
+    
+  
+  <link rel="stylesheet" href="/styles.css">
+  <%- include ('commons/footer') %>
+
+
