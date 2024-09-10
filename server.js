@@ -101,6 +101,19 @@ app.use((err, req, res, next) => {
 });
 
 
+app.patch('/users/:name', (req, res) => {
+    const userName = parseInt(req.params.name);
+    const updatedFields = req.body;
+
+    let user = users.find(user => user.name === userName);
+    if (user) {
+        Object.assign(user, updatedFields);
+        res.status(200).json(user);
+    } else {
+        res.status(404).send('User not found');
+    }
+});
+
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
